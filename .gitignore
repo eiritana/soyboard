@@ -1,4 +1,4 @@
-static/thumbnails
-static/uploads
+soyboard/static/thumbnails
+soyboard/static/uploads
 __pycache__
 .pytest_cache/
