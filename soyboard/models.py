@@ -11,7 +11,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from PIL import Image
 
-import config
+from . import config
 
 
 db = SQLAlchemy()
@@ -36,6 +36,7 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     bumptime = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
+    # FIXME: what if passed a name which contains no tripcode?
     @staticmethod
     def make_tripcode(name_and_tripcode: str) -> Tuple[str, str]:
         """Create a tripcode from the name field of a post.
@@ -43,6 +44,10 @@ class Post(db.Model):
         Returns:
             tuple: A two-element tuple containing (in the order of):
                 name without tripcode, tripcode.
+
+        Warning:
+            Must have `this#format` or it will raise an exception
+            related to unpacking.
 
         """
 

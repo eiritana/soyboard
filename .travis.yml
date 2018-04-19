@@ -1,0 +1,13 @@
+language: python
+
+python:
+  - "3.6"
+
+services:
+  - docker
+
+install:
+  - docker-compose build
+
+script:
+  - docker-compose run soyboard pytest

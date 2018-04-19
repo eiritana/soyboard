@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 chown -R nginx:nginx ${APP_DIR} \
     && chmod 777 ${APP_DIR} -R \
     && chmod 777 /run/ -R \
@@ -8,6 +10,10 @@ chown -R nginx:nginx ${APP_DIR} \
 if [ "$1" == "debug" ]; then 
     echo "Running app in debug mode!"
     python3 app.py
+elif [ "$1" == "pytest" ]; then
+    echo "Starting in pytest mode!"
+    cd /app
+    pytest tests
 else
     echo "Running app in production mode!"
     nginx && uwsgi --ini /app.ini

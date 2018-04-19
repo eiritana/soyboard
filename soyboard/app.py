@@ -8,10 +8,10 @@ from flask import (
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-import forms
-import config
-import models
-import moderate
+from . import forms
+from . import config
+from . import models
+from . import moderate
 
 
 POSTS_PER_PAGE = 3

@@ -11,7 +11,7 @@ from flask.ext.admin import helpers, expose
 from werkzeug.security import generate_password_hash, check_password_hash
 from jinja2 import Markup
 
-import models
+from . import models
 
 
 def ban_lookup(request):
