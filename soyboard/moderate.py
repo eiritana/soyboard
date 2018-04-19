@@ -1,6 +1,8 @@
 """Much of this is directly from flask-admin's example..."""
 
 import os
+import string
+import random
 
 from flask import Flask, url_for, redirect, render_template, request
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -12,6 +14,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from jinja2 import Markup
 
 from . import models
+from . import forms
+from . import config
 
 
 def ban_lookup(request):
@@ -113,9 +117,8 @@ class MyModelThumbView(MyModelView):
 
     # Alternative way to contribute field is to override it completely.
     # In this case, Flask-Admin won't attempt to merge various parameters for the field.
-    from forms import NewReplyForm
     form_extra_fields = {
-        'image': NewReplyForm.image,
+        'image': forms.NewReplyForm.image,
     }
 
 
@@ -176,16 +179,12 @@ def build_sample_db():
     Populate a small db with some example entries.
     """
 
-    import string
-    import random
-
     # FIXME: don't drop all omg
     models.db.drop_all()
     models.db.create_all()
     test_user = models.User(login="malebride", password=generate_password_hash("test"))
     models.db.session.add(test_user)
 
-    import config
     key_pairs = [
         ('site_tagline', config.SITE_TAGLINE),
         ('site_title', config.SITE_TITLE),
