@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ post.subject }} (#{{ post.id }}){% endblock %}
+
+{% block content %}
+
+<aside class="return">
+    <a href="/">return</a>
+
+    <h2>{% if post.subject %}{{ post.subject }} - {% endif %}Thread #{{ post.id}}</h2>
+</aside>
+
+<form action="/posts/new" method="POST" enctype="multipart/form-data">
+  <fieldset>
+    <legend>Create reply</legend>
+    {{ form.csrf_token() }}
+    <label>Name: {{ form.name }}</label>
+    <label>Subject: {{ form.subject }}</label>
+    <label>Message: {{ form.message }}</label>
+    <label>Image: {{ form.image }}</label>
+    <label>Tip link (Ko-fi, Paypal.me, Amazon Wishlist): {{ form.tip_link }}</label>
+    {{ form.reply_to(value=post.id) }}
+    <input type="submit" value="Post!">
+  </fieldset>
+</form>
+
+<div class="blotter">
+  <ul>
+  {% for entry in blotter_entries %}
+    <li>{{ entry.timestamp }}: {{ entry.text }}</li>
+  {% endfor %}
+  </ul>
+</div>
+
+{{ post_to_html(post) }}
+
+  {% for reply in replies %}
+    {{ post_to_html(reply) }}
+  {% endfor %}
+{% endblock %}

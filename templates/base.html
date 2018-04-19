@@ -1,0 +1,41 @@
+{% macro post_to_html(post) -%}
+  <article id="{{ post.id }}" class="{% if post.reply_to %}reply{% else %}op{% endif %}">
+    {% if post.image %}
+    <a href="{{ post.image }}" class="thumbnail"><img src="{{ post.thumbnail }}" alt="{{ post.message }}"></a>
+    {% endif %}
+    <header>
+      {% if post.reply_to %}
+        <h1><a href="/posts/{{ post.reply_to }}#{{ post.id }}">#{{ post.id }}</a>{% if post.subject %}: {{ post.subject }}{% endif %}</h1>
+      {% else %}
+        <h1><a href="/posts/{{ post.id }}">#{{ post.id }}</a>{% if post.subject %}: {{ post.subject }}{% endif %}</h1>
+      {% endif %}
+      <p>
+        Posted @ <time>{{ post.timestamp }}</time> by
+        {% if post.name %}{{ post.name }}{% if post.tripcode %} # <span class="tripcode">{{ post.tripcode }}</span>{% endif %}{% else %}Anonymous{% endif %}
+        {% if post.tip_link %}<a href="{{ post.tip_link }}">Tip ({{ post.tip_domain}})</a>{% endif %}
+    </p>
+    </header>
+    <p class="message">{{ post.message }}</p>
+  </article>
+{%- endmacro %}
+<html>
+<head>
+  {% block head %}
+  <title>{% block title %}{% endblock %} - {{ config_db('site_title') }}</title>
+  <link rel="stylesheet" type="text/css" href="/static/style.css">
+  {% endblock %}
+</head>
+<body>
+
+<header class="brand">
+  <img src="/site-banner" alt="Random banner">
+  <h1><a href="/">{{ config_db('site_title') }}</a></h1>
+  <p>{{ config_db('site_tagline') | safe }}</p>
+</header>
+
+{% block content %}
+
+{% endblock %}
+<footer class="page-footer">{{ config_db('site_footer') | safe }}</footer>
+</body>
+</html>

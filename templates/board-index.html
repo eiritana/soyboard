@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Page #{{ current_page }}{% endblock %}
+
+{% block content %}
+<form action="/posts/new" method="POST" enctype="multipart/form-data">
+  <fieldset>
+    <legend>Create new post</legend>
+    {{ form.csrf_token() }}
+    <label>Name: {{ form.name }}</label>
+    <label>Subject: {{ form.subject }}</label>
+    <label>Message: {{ form.message }}</label>
+    <label>Image: {{ form.image }}</label>
+    <label>Tip link (Ko-fi, Paypal.me, Amazon Wishlist): {{ form.tip_link }}</label>
+    <input type="submit" value="Post!">
+  </fieldset>
+</form>
+
+<div class="blotter">
+  <ul>
+  {% for entry in blotter_entries %}
+    <li>{{ entry.timestamp }}: {{ entry.text }}</li>
+  {% endfor %}
+  </ul>
+</div>
+
+{% for post in posts %}
+  {{ post_to_html(post) }}
+
+  {% for reply in post.replies %}
+    {{ post_to_html(reply, reply.id) }}
+  {% endfor %}
+{% endfor %}
+
+<nav class="pagination">
+    <ol>
+    {% for page_number in range(1, total_pages + 1) %}
+        <li{% if current_page == page_number %} class="current-page"{% endif %}><a href="?page={{ page_number }}">{{ page_number }}</a></li>
+    {% endfor %}
+    </ol>
+</nav>
+
+{% endblock %}

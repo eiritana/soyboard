@@ -1,0 +1,10 @@
+version: '3.2'
+
+services:
+    soyboard:
+        restart: always
+        build: .
+        image: soyboard
+        volumes: ['.:/app']
+        expose:
+            - "80"
