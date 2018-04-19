@@ -27,7 +27,7 @@
   {{ post_to_html(post) }}
 
   {% for reply in post.replies %}
-    {{ post_to_html(reply, reply.id) }}
+    {{ post_to_html(reply) }}
   {% endfor %}
 {% endfor %}
 
