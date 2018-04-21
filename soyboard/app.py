@@ -14,7 +14,7 @@ from . import models
 from . import moderate
 
 
-POSTS_PER_PAGE = 3
+POSTS_PER_PAGE = 3  # FIXME: move to config
 
 
 app = Flask(__name__)
@@ -64,12 +64,6 @@ def board_index():
         current_page=current_page,
         blotter_entries=get_blotter_entries(),
     )
-
-
-@app.route("/static/<path:path>")
-def static_file(path: str):
-    """Serve static files."""
-    return send_from_directory('static', path)
 
 
 # FIXME: check if reply or not for error/404, else...
@@ -198,6 +192,3 @@ with app.app_context():
 
     models.db.init_app(app)
     moderate.build_sample_db()
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)

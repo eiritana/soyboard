@@ -184,6 +184,9 @@ def build_sample_db():
     models.db.create_all()
     test_user = models.User(login="malebride", password=generate_password_hash("test"))
     models.db.session.add(test_user)
+    models.db.session.add(
+        models.VerifiedTripcode(tripcode='yVHINOp7RTBrAWtSM1Fm'),  # "traps"
+    )
 
     key_pairs = [
         ('site_tagline', config.SITE_TAGLINE),

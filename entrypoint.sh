@@ -9,7 +9,7 @@ chown -R nginx:nginx ${APP_DIR} \
 
 if [ "$1" == "debug" ]; then 
     echo "Running app in debug mode!"
-    python3 app.py
+    python3 -m soyboard.runserver
 elif [ "$1" == "pytest" ]; then
     echo "Starting in pytest mode!"
     cd /app

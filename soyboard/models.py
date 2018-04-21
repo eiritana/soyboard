@@ -2,6 +2,7 @@
 # some annoying copypaste code to get primary keys to show
 import os
 import base64
+import pathlib
 import datetime
 from typing import Tuple, Union
 from urllib.parse import urlparse
@@ -95,34 +96,47 @@ class Post(db.Model):
         if any([form.image.data, form.tip_link.data]) and not is_verified:
             raise Exception('Verified tripcode error.')
 
+        # NOTE: not a fan of doing this, but there's really no
+        # other way to get url and abs path to static directory
+        # than importing the app! If we import it out of this
+        # method's scope, we'll get a circular dependency, also.
+        from . import app
+
         # First we handle image if there is one (optional for replies)
         if form.image.data and is_verified:
             # NOTE: what if overwrite error
             safe_name = secure_filename(form.image.data.filename)
-            upload_path = os.path.join(
-                'static',
+            upload_url = os.path.join(
+                app.app.static_url_path,
                 'uploads',
                 safe_name,
             )
-            form.image.data.save(upload_path)
+            upload_abs_path = os.path.join(
+                app.app.static_folder,
+                'uploads',
+                safe_name,
+            )
+            form.image.data.save(upload_abs_path)
 
             # thumbnail
-            image = Image.open(upload_path)
+            image = Image.open(upload_abs_path)
             if hasattr(form, 'reply_to'):
                 image.thumbnail(THUMBNAIL_SIZE_REPLY)
             else:
                 image.thumbnail(THUMBNAIL_SIZE_OP)
-            thumbnail_path = os.path.join(
-                'static',
+            thumbnail_url = os.path.join(
+                app.app.static_url_path,
                 'thumbnails',
                 ('%dx%d' + safe_name) % image.size,
             )
-            image.save(thumbnail_path)
-
-            image_url = os.path.join('/', upload_path)
-            thumbnail_url = os.path.join('/', thumbnail_path)
+            thumbnail_abs_path = os.path.join(
+                app.app.static_folder,
+                'thumbnails',
+                ('%dx%d' + safe_name) % image.size,
+            )
+            image.save(thumbnail_abs_path)
         else:
-            image_url = None
+            upload_url = None
             thumbnail_url = None
 
         tip_link, tip_domain = cls.tip_link_stuff(form.tip_link.data)
@@ -132,7 +146,7 @@ class Post(db.Model):
             tripcode=tripcode,
             tip_link=tip_link,
             tip_domain=tip_domain,
-            image=image_url,
+            image=upload_url,
             thumbnail=thumbnail_url,
             message=form.message.data,
             reply_to=getattr(form, 'reply_to').data if hasattr(form, 'reply_to') else None,
