@@ -3,7 +3,10 @@
 [![Build
 Status](https://travis-ci.org/lily-mayfield/soyboard.svg?branch=master)](https://travis-ci.org/lily-mayfield/soyboard)
 
-One-board imageboard.
+One-board imageboard where only verified tripcodes can post images and start
+threads (everyone else may only reply to threads with text).
+
+## General technical
 
 This project is in alpha, it is poorly documented and very messy, it is not
 recommended for production.
@@ -12,6 +15,9 @@ Admins login at `/admin` with the default username `admin` and default password 
 
 When you run docker you can see the IP it's listening on by using `docker
 inspect containername`.
+
+The default verified tripcode is `lol` so put something like `name#lol` in the
+name field when posting.
 
 ## Production
 

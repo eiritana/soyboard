@@ -185,7 +185,7 @@ def build_sample_db():
     test_user = models.User(login="admin", password=generate_password_hash("admin"))
     models.db.session.add(test_user)
     models.db.session.add(
-        models.VerifiedTripcode(tripcode='yVHINOp7RTBrAWtSM1Fm'),  # "traps"
+        models.VerifiedTripcode(tripcode='wMKmOyDpdxJxUrAurVgZ'),
     )
 
     key_pairs = [
