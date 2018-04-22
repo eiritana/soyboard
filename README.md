@@ -21,10 +21,10 @@ name field when posting.
 
 ## Production
 
-`docker-compose build; docker run soyboard`
-
 You can also run the above locally to test out the production configuration for
 soyboard.
+
+`docker-compose build; docker-compose run -d --rm -p 0.0.0.0:80:80 soyboard`
 
 ## Testing
 
