@@ -92,17 +92,6 @@ class MyModelSrcView(MyModelView):
 
         return Markup('<img src="%s">' % model.src)
 
-    column_formatters = {
-        'src': _list_src
-    }
-
-    # Alternative way to contribute field is to override it completely.
-    # In this case, Flask-Admin won't attempt to merge various parameters for the field.
-    from flask_wtf.file import FileField, FileRequired
-    form_extra_fields = {
-        'src': FileField(),
-    }
-
 
 class MyModelThumbView(MyModelView):
     def _list_thumbnail(view, context, model, name):
