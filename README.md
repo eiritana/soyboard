@@ -6,8 +6,6 @@ Status](https://travis-ci.org/lily-mayfield/soyboard.svg?branch=master)](https:/
 One-board imageboard where only verified tripcodes can post images and start
 threads (everyone else may only reply to threads with text).
 
-This code runs [boy.soy](http://boy.soy/).
-
 ## General technical
 
 This project is in alpha, it is poorly documented and very messy, it is not
