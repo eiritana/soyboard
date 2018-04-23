@@ -42,6 +42,11 @@ def board_index():
     posts = pages.items
     # FIXME: should just use backref relationship
     for post in posts:
+        reply_count = (
+            models.Post.query
+            .filter(models.Post.reply_to == post.id)
+            .count()
+        )
         replies = reversed(
             (
                 models.Post.query
@@ -52,6 +57,7 @@ def board_index():
             )
         )
         post.replies = replies
+        post.reply_count = reply_count
 
     return render_template(
         'board-index.html',

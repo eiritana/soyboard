@@ -26,6 +26,12 @@
 {% for post in posts %}
   {{ post_to_html(post) }}
 
+  {% if post.reply_count > config.INDEX_REPLIES_PER_POST %}
+  <div class="omitted">
+    <a href="/posts/{{ post.id }}">{{ post.reply_count - config.INDEX_REPLIES_PER_POST }} replies ommitted</a>
+  </div>
+  {% endif %}
+
   {% for reply in post.replies %}
     {{ post_to_html(reply) }}
   {% endfor %}

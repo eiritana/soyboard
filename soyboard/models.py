@@ -17,8 +17,9 @@ from . import config
 
 db = SQLAlchemy()
 
-THUMBNAIL_SIZE_OP = 400, 400
-THUMBNAIL_SIZE_REPLY = 175, 175
+# FIXME: move to config
+THUMBNAIL_SIZE_OP = 250, 250
+THUMBNAIL_SIZE_REPLY = 125, 125
 
 
 # FIXME: bad schema...
@@ -119,6 +120,7 @@ class Post(db.Model):
             form.image.data.save(upload_abs_path)
 
             # thumbnail
+            # FIXME: make into method
             image = Image.open(upload_abs_path)
             if hasattr(form, 'reply_to'):
                 image.thumbnail(THUMBNAIL_SIZE_REPLY)

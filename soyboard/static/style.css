@@ -260,3 +260,7 @@ article {
   font-size: 0.75rem;
   line-height: 2rem;
 }
+
+.omitted {
+  padding: 1.5rem 0;
+}
