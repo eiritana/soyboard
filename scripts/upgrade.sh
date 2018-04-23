@@ -1,4 +1,6 @@
 #!/bin/sh
+# FIXME: this is a temporary script until I ustart storing
+# test.db outside the docker container or until I setup postgres service...
 set -e
 docker cp "$(docker ps -a -q  --filter ancestor=soyboard)":/app/soyboard/test.db .
 docker stop "$(docker ps -a -q  --filter ancestor=soyboard)"
