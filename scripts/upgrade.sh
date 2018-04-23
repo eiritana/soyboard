@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 docker stop "$(docker ps -a -q  --filter ancestor=soyboard)"
 docker-compose build
 docker cp "$(docker ps -a -q  --filter ancestor=soyboard)":/app/soyboard/test.db .
