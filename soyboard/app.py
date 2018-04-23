@@ -14,9 +14,6 @@ from . import models
 from . import moderate
 
 
-POSTS_PER_PAGE = 3  # FIXME: move to config
-
-
 app = Flask(__name__)
 app.config.from_object(config)
 
@@ -38,7 +35,7 @@ def board_index():
         .order_by(models.Post.bumptime.desc())
         .paginate(
             current_page,
-            per_page=POSTS_PER_PAGE,
+            per_page=config.POSTS_PER_PAGE,
         )
     )
     total_pages = pages.pages
@@ -50,7 +47,7 @@ def board_index():
                 models.Post.query
                 .filter(models.Post.reply_to == post.id)
                 .order_by(models.Post.id.desc())
-                .limit(2)
+                .limit(config.INDEX_REPLIES_PER_POST)
                 .all()
             )
         )
