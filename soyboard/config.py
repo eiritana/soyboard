@@ -1,6 +1,6 @@
 import os
 
-SECRET_KEY = "lol"
+SECRET_KEY = "PLEASE CHANGE ME"
 SQLALCHEMY_DATABASE_URI = os.environ.get('DB_STRING', 'sqlite:///test.db')
 SITE_TAGLINE = 'some tagline'
 SITE_TITLE = 'super title'
