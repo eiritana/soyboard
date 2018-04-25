@@ -38,6 +38,13 @@ class Post(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
     bumptime = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
+    @staticmethod
+    def format_message(message: str) -> str:
+        """Parse #id links and break blocks into paragraphs."""
+        # last step: strip everything but specific link kind and paragraphs
+        # and make sure there's no stle or anything
+        pass
+
     # FIXME: what if passed a name which contains no tripcode?
     @staticmethod
     def make_tripcode(name_and_tripcode: str) -> Tuple[str, str]:
