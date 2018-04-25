@@ -15,7 +15,7 @@
         {% if post.tip_link %}<a href="{{ post.tip_link }}">Tip ({{ post.tip_domain}})</a>{% endif %}
     </p>
     </header>
-    <p class="message">{{ post.message }}</p>
+    <p class="message">{{ post.message | safe }}</p>
   </article>
 {%- endmacro %}
 <html>

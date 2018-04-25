@@ -13,7 +13,7 @@ if [ "$1" == "debug" ]; then
 elif [ "$1" == "pytest" ]; then
     echo "Starting in pytest mode!"
     cd /app
-    pytest tests
+    pytest -vv tests
 else
     echo "Running app in production mode!"
     nginx && uwsgi --ini /app.ini

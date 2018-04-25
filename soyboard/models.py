@@ -1,6 +1,7 @@
 # FIXME: primary key being avoided because you have to do
 # some annoying copypaste code to get primary keys to show
 import os
+import re
 import base64
 import pathlib
 import datetime
@@ -8,6 +9,7 @@ from typing import Tuple, Union
 from urllib.parse import urlparse
 
 import scrypt
+from jinja2 import Markup
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from PIL import Image
@@ -39,11 +41,16 @@ class Post(db.Model):
     bumptime = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
     @staticmethod
-    def format_message(message: str) -> str:
-        """Parse #id links and break blocks into paragraphs."""
-        # last step: strip everything but specific link kind and paragraphs
-        # and make sure there's no stle or anything
-        pass
+    def reference_links(message: str, thread_id: int) -> str:
+        """Parse >>id links"""
+
+        sanitized_message = str(Markup.escape(message))
+        pattern = re.compile('\&gt\;\&gt\;([0-9]+)')
+        message_with_links = pattern.sub(
+            r'<a href="/posts/%d#\1">&gt;&gt;\1</a>' % thread_id,
+            sanitized_message,
+        )
+        return message_with_links
 
     # FIXME: what if passed a name which contains no tripcode?
     @staticmethod
@@ -148,6 +155,12 @@ class Post(db.Model):
             upload_url = None
             thumbnail_url = None
 
+        # message link
+        if hasattr(form, 'reply_to'):
+            message = cls.reference_links(form.message.data, int(form.reply_to.data))
+        else:
+            message = form.message.data
+
         tip_link, tip_domain = cls.tip_link_stuff(form.tip_link.data)
         new_post = cls(
             subject=form.subject.data,
@@ -157,7 +170,7 @@ class Post(db.Model):
             tip_domain=tip_domain,
             image=upload_url,
             thumbnail=thumbnail_url,
-            message=form.message.data,
+            message=message,
             reply_to=getattr(form, 'reply_to').data if hasattr(form, 'reply_to') else None,
         )
         db.session.add(new_post)
