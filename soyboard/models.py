@@ -31,7 +31,7 @@ class Post(db.Model):
     subject = db.Column(db.String(120))
     name = db.Column(db.String(120))
     tripcode = db.Column(db.String(64))
-    message = db.Column(db.String(120), nullable=False)
+    message = db.Column(db.String(2000), nullable=False)
     image = db.Column(db.String(120))
     tip_link = db.Column(db.String(120))
     tip_domain = db.Column(db.String(120))
@@ -266,4 +266,4 @@ class VerifiedTripcode(db.Model):
 
 class ConfigPair(db.Model):
     key = db.Column(db.String(100), primary_key=True)
-    value = db.Column(db.String(100))
+    value = db.Column(db.String(1000))
