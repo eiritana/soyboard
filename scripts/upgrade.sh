@@ -12,7 +12,7 @@ echo "Stop any currently running soyboard containers..."
 docker stop "$(docker ps -a -q  --filter ancestor=soyboard)"
 
 echo "Run new image and serve!"
-docker-compose run -d --rm -p 0.0.0.0:80:80 soyboard
+docker-compose run -env-file ./.env-file -d --rm -p 0.0.0.0:80:80 soyboard
 
 echo "Copy database from backup to Docker location!"
 cp /tmp/test.db soyboard/test.db
