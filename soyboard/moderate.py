@@ -168,22 +168,26 @@ def build_sample_db():
     Populate a small db with some example entries.
     """
 
-    # FIXME: don't drop all omg
-    models.db.drop_all()
-    models.db.create_all()
-    test_user = models.User(login="admin", password=generate_password_hash("admin"))
-    models.db.session.add(test_user)
-    models.db.session.add(
-        models.VerifiedTripcode(tripcode='ZoGgoBAnxOWv8QiHwA9A'),
-    )
+    # FIXME: this is a horrible way to check for database
+    # considering people may not even use sqlite!!!!
+    if not os.path.isfile('soyboard/test.db'):
+        models.db.create_all()
+        test_user = models.User(login="admin", password=generate_password_hash("admin"))
+        models.db.session.add(test_user)
+        models.db.session.add(
+            models.VerifiedTripcode(
+                tripcode=models.Post.make_tripcode('test#lol'),
+            ),
+        )
 
-    key_pairs = [
-        ('site_tagline', config.SITE_TAGLINE),
-        ('site_title', config.SITE_TITLE),
-        ('site_footer', config.SITE_FOOTER),
-    ]
-    for key, value in key_pairs:
-        models.db.session.add(models.ConfigPair(key=key, value=value))
+        key_pairs = [
+            ('site_tagline', config.SITE_TAGLINE),
+            ('site_title', config.SITE_TITLE),
+            ('site_footer', config.SITE_FOOTER),
+        ]
+        for key, value in key_pairs:
+            models.db.session.add(models.ConfigPair(key=key, value=value))
 
-    models.db.session.commit()
+        models.db.session.commit()
+
     return
