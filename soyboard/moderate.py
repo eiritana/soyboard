@@ -176,7 +176,7 @@ def build_sample_db():
         models.db.session.add(test_user)
         models.db.session.add(
             models.VerifiedTripcode(
-                tripcode=models.Post.make_tripcode('test#lol'),
+                tripcode=models.Post.make_tripcode('test#lol')[1],
             ),
         )
 
