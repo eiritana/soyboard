@@ -22,7 +22,7 @@ ENV LIBRARY_PATH=/lib:/usr/lib
 ENV APP_DIR=/app
 
 # app dir
-COPY . ${APP_DIR}
+COPY requirements.txt ${APP_DIR}/requirements.txt
 RUN pip3 install -r ${APP_DIR}/requirements.txt
 RUN chown -R nginx:nginx ${APP_DIR} \
     && chmod 777 ${APP_DIR} -R \

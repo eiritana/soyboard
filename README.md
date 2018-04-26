@@ -45,11 +45,11 @@ You can run tests with `pytest` in the project root.
 
 ### Run tests in Docker
 
-`docker-compose build; docker run soyboard pytest`
+`docker-compose build; docker-compose run soyboard pytest`
 
 ### Debugging in Docker
 
 Run a server which reloads in a second within detecting
 code changes:
 
-`docker-compose build; docker run soyboard debug`
+`docker-compose build; docker-compose run soyboard debug`

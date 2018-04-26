@@ -6,5 +6,7 @@ services:
         build: .
         image: soyboard
         volumes: ['.:/app']
+        env_file:
+            - .env-file
         expose:
             - "80"
