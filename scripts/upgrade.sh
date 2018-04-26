@@ -2,8 +2,6 @@
 # FIXME: this will be deleted soon because Docker isn't
 # setup right yet for this repo.
 
-set -e
-
 echo "Backup database to /tmp..."
 cp soyboard/test.db /tmp
 
