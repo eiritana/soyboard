@@ -243,7 +243,7 @@ class ErrorPageImage(db.Model):
 
 class BlotterEntry(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(100))
+    text = db.Column(db.String(250))
     timestamp = db.Column(db.DateTime, default=datetime.datetime.utcnow, nullable=False)
 
 
