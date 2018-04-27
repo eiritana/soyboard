@@ -123,6 +123,10 @@ def create_post():
             # send prohibited error
             return render_template('errors.html', errors=[e]), 403
 
+        # FIXME: if this is a new thread and the maximum number
+        # of threads has been reached, delete the oldest thread
+        # and its replies.
+
         if post.reply_to:
             return redirect(
                 url_for(
