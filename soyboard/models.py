@@ -24,6 +24,17 @@ THUMBNAIL_SIZE_OP = 250, 250
 THUMBNAIL_SIZE_REPLY = 125, 125
 
 
+class RequiresVerifiedTripcodeError(BaseException):
+    """The tripcode, or lack thereof, is not verified,
+    and a verified tripcode is required to perform this
+    action.
+
+    """
+
+    def __init__(self):
+        super().__init__(self.__doc__)
+
+
 # FIXME: bad schema...
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -94,6 +105,10 @@ class Post(db.Model):
         Returns:
             Post: ...
 
+        Raises:
+            RequiresVerifiedTripcodeError: if form data contains image
+                or tip link, which only verified tripcodes may use.
+
         """
 
         # A valid tripcode is a name field containing an octothorpe
@@ -109,7 +124,7 @@ class Post(db.Model):
         # If starting a thread or has image and NOT verified make
         # error (new threads require an image so this is implicit)
         if any([form.image.data, form.tip_link.data]) and not is_verified:
-            raise Exception('Verified tripcode error.')
+            raise RequiresVerifiedTripcodeError()
 
         # NOTE: not a fan of doing this, but there's really no
         # other way to get url and abs path to static directory

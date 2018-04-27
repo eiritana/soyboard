@@ -117,7 +117,12 @@ def create_post():
         form = forms.NewPostForm()
 
     if form.validate_on_submit():
-        post = models.Post.from_form(form)
+        try:
+            post = models.Post.from_form(form)
+        except models.RequiresVerifiedTripcodeError as e:
+            # send prohibited error
+            return render_template('errors.html', errors=[e]), 403
+
         if post.reply_to:
             return redirect(
                 url_for(
@@ -134,14 +139,12 @@ def create_post():
                 )
             )
 
-    # FIXME: this should be an error because something
-    # failed wtforms validation.
     errors = []
     for field, field_errors in form.errors.items():
         field_name = getattr(form, field).label.text
         for error in field_errors:
             errors.append("%s: %s" % (field_name, error))
-    return render_template('errors.html', errors=errors)
+    return render_template('errors.html', errors=errors), 400
 
 
 @app.route("/error-page-image")
